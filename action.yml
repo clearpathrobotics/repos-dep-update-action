@@ -1,0 +1,53 @@
+name: 'Repos Dependency Update Action'
+description: 'Update .repos file to match base or head branch'
+author: 'Luis Camero'
+inputs:
+  branch:
+    description: 'Branch to update .repos with.'
+    required: true
+  input:
+    description: 'Input .repos file.'
+    required: true
+  output:
+    description: 'Output .repos file.'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Update .repos
+      id: repos-dep-update
+      shell: bash
+      env:
+        GH_REPO: ${{ github.repository }}
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        pip install yq
+        sudo apt-get install jq
+
+        branch=${{ inputs.branch }}
+        echo "Updating to branch: $branch if exists."
+
+        rm -f ${{ inputs.output }}
+
+        echo -e "repositories:" >> ${{ inputs.output }}
+
+        for repo in $(yq -r '.repositories | to_entries[] | .key' ${{ inputs.input }}); do
+
+          type=$(yq -r .repositories.$repo.type ${{ inputs.input }})
+          url=$(yq -r .repositories.$repo.url ${{ inputs.input }})
+          version=$(yq -r .repositories.$repo.version ${{ inputs.input }})
+          info=$(git ls-remote $url)
+
+          if [[ $info == *"$branch"* ]]; then
+            version=$branch
+          else
+            version=$version
+          fi
+
+          echo -e "  $repo:" >> ${{ inputs.output }}
+          echo -e "    type: $type" >> ${{ inputs.output }}
+          echo -e "    url: $url" >> ${{ inputs.output }}
+          echo -e "    version: $version" >> ${{ inputs.output }}
+        done
+
+        cat ${{ inputs.output }}
