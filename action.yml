@@ -25,7 +25,6 @@ runs:
         sudo apt-get install jq
 
         branch=${{ inputs.branch }}
-        echo "Updating to branch: $branch if exists."
 
         rm -f ${{ inputs.output }}
 
@@ -49,5 +48,3 @@ runs:
           echo -e "    url: $url" >> ${{ inputs.output }}
           echo -e "    version: $version" >> ${{ inputs.output }}
         done
-
-        cat ${{ inputs.output }}
