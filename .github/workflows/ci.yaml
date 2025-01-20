@@ -3,7 +3,7 @@ name: Update Repos CI
 on: push
 
 jobs:
-  ci:
+  ci-clearpath-common:
     name: test-on-clearpath-common
     runs-on: ubuntu-latest
     steps:
@@ -19,3 +19,20 @@ jobs:
       - name: Result
         run: |
           cat clearpath_common_updated.repos
+  ci-clearpath-common-negative:
+    name: test-on-clearpath-common
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v3
+      - name: Use this actions
+        id: repos-dep-update
+        uses: ./
+        with:
+          branch: this-branch-does-not-exist
+          input: clearpath_common.repos
+          output: clearpath_common_fail.repos
+      - name: Result
+        run: |
+          cat clearpath_common_fail.repos
+
