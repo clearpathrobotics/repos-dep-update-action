@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install yq --break-system-packages
-          apt-get install -y jq
+          apt-get install -y jq git
       - name: Use this actions
         id: repos-dep-update
         uses: ./
