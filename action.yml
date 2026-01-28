@@ -16,7 +16,7 @@ runs:
   steps:
     - name: Update .repos
       id: repos-dep-update
-      shell: bash
+      # shell: bash
       env:
         GH_REPO: ${{ github.repository }}
         GH_TOKEN: ${{ github.token }}
