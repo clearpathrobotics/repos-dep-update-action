@@ -1,6 +1,8 @@
 name: Update Repos CI
 
-on: push
+on:
+  push:
+  pull_request:
 
 jobs:
   ci-clearpath-common:
