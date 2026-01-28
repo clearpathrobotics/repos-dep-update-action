@@ -22,7 +22,7 @@ runs:
         GH_TOKEN: ${{ github.token }}
       run: |
         pip install yq --break-system-packages
-        apt-get install jq
+        sudo apt-get install -y jq
 
         branch=${{ inputs.branch }}
 
