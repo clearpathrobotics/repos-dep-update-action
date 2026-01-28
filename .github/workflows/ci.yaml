@@ -19,6 +19,24 @@ jobs:
       - name: Result
         run: |
           cat clearpath_common_updated.repos
+  ci-clearpath-common-container:
+    name: test-on-clearpath-common
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:noble
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v3
+      - name: Use this actions
+        id: repos-dep-update
+        uses: ./
+        with:
+          branch: jazzy
+          input: clearpath_common.repos
+          output: clearpath_common_updated.repos
+      - name: Result
+        run: |
+          cat clearpath_common_updated.repos
   ci-clearpath-common-negative:
     name: test-on-clearpath-common-negative
     runs-on: ubuntu-latest
