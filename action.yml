@@ -21,8 +21,8 @@ runs:
         GH_REPO: ${{ github.repository }}
         GH_TOKEN: ${{ github.token }}
       run: |
-        python3 -m pip install yq --break-system-packages
-        sudo apt-get install jq
+        pip install yq --break-system-packages
+        apt-get install jq
 
         branch=${{ inputs.branch }}
 
