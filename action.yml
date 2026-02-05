@@ -25,7 +25,7 @@ runs:
 
         rm -f ${{ inputs.output }}
 
-        echo -e "repositories:" >> ${{ inputs.output }}
+        echo "repositories:" >> ${{ inputs.output }}
 
         for repo in $(yq -r '.repositories | to_entries[] | .key' ${{ inputs.input }}); do
 
@@ -40,8 +40,8 @@ runs:
             version=$version
           fi
 
-          echo -e "  $repo:" >> ${{ inputs.output }}
-          echo -e "    type: $type" >> ${{ inputs.output }}
-          echo -e "    url: $url" >> ${{ inputs.output }}
-          echo -e "    version: $version" >> ${{ inputs.output }}
+          echo "  $repo:" >> ${{ inputs.output }}
+          echo "    type: $type" >> ${{ inputs.output }}
+          echo "    url: $url" >> ${{ inputs.output }}
+          echo "    version: $version" >> ${{ inputs.output }}
         done
