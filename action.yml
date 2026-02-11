@@ -40,11 +40,6 @@ runs:
             version=$version
           fi
 
-          echo "repo: $repo"
-          echo "type: $type"
-          echo "url: $url"
-          echo "version: $version"
-
           echo "  $repo:" >> ${{ inputs.output }}
           echo "    type: $type" >> ${{ inputs.output }}
           echo "    url: $url" >> ${{ inputs.output }}
