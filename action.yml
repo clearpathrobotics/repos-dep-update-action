@@ -16,7 +16,7 @@ runs:
   steps:
     - name: Update .repos
       id: repos-dep-update
-      shell: sh
+      shell: bash
       env:
         GH_REPO: ${{ github.repository }}
         GH_TOKEN: ${{ github.token }}
@@ -44,7 +44,6 @@ runs:
           echo "type: $type"
           echo "url: $url"
           echo "version: $version"
-          echo "info: $info"
 
           echo "  $repo:" >> ${{ inputs.output }}
           echo "    type: $type" >> ${{ inputs.output }}
