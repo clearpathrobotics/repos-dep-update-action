@@ -49,6 +49,30 @@ jobs:
       - name: Result
         run: |
           cat clearpath_common_updated.repos
+  ci-clearpath-common-inplace:
+    name: test-on-clearpath-common-inplace
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:noble
+    steps:
+      - name: Install or Update python3
+        run: apt-get update && apt-get install -y python3 python3-pip jq
+      - name: Check out this repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip install yq --break-system-packages
+          apt-get install -y jq git
+      - name: Use this actions
+        id: repos-dep-update
+        uses: ./
+        with:
+          branch: jazzy
+          input: clearpath_common.repos
+          output: clearpath_common.repos
+      - name: Result
+        run: |
+          cat clearpath_common.repos
   ci-clearpath-common-negative:
     name: test-on-clearpath-common-negative
     runs-on: ubuntu-latest
