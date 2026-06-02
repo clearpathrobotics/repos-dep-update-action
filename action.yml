@@ -21,27 +21,23 @@ runs:
         GH_REPO: ${{ github.repository }}
         GH_TOKEN: ${{ github.token }}
       run: |
-        branch=${{ inputs.branch }}
+        set -euo pipefail
 
-        rm -f ${{ inputs.output }}
+        branch="${{ inputs.branch }}"
 
-        echo "repositories:" >> ${{ inputs.output }}
+        tmp_output=$(mktemp)
+        trap 'rm -f "$tmp_output"' EXIT
 
-        for repo in $(yq -r '.repositories | to_entries[] | .key' ${{ inputs.input }}); do
+        cp "${{ inputs.input }}" "$tmp_output"
 
-          type=$(yq -r .repositories.$repo.type ${{ inputs.input }})
-          url=$(yq -r .repositories.$repo.url ${{ inputs.input }})
-          version=$(yq -r .repositories.$repo.version ${{ inputs.input }})
-          info=$(git ls-remote $url)
+        for repo in $(yq -r '.repositories | to_entries[] | .key' "${{ inputs.input }}"); do
+
+          url=$(yq -r ".repositories.\"$repo\".url" "${{ inputs.input }}")
+          info=$(git ls-remote "$url")
 
           if [[ $info == *"$branch"* ]]; then
-            version=$branch
-          else
-            version=$version
+            yq -i ".repositories.\"$repo\".version = \"$branch\"" "$tmp_output"
           fi
-
-          echo "  $repo:" >> ${{ inputs.output }}
-          echo "    type: $type" >> ${{ inputs.output }}
-          echo "    url: $url" >> ${{ inputs.output }}
-          echo "    version: $version" >> ${{ inputs.output }}
         done
+
+        mv "$tmp_output" "${{ inputs.output }}"
