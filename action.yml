@@ -36,7 +36,7 @@ runs:
           info=$(git ls-remote "$url")
 
           if [[ $info == *"$branch"* ]]; then
-            yq -i ".repositories.\"$repo\".version = \"$branch\"" "$tmp_output"
+            yq -yi ".repositories.\"$repo\".version = \"$branch\"" "$tmp_output"
           fi
         done
 
